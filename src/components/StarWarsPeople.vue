@@ -1,36 +1,50 @@
 <template>
-  <div>
-    <h1>Star Wars Characters (with comments)</h1>
+  <div class="container mt-5">
 
-    <ul>
+    <div class="columns is-multiline">
       <!-- Loop through characters fetched from the API -->
-      <li v-for="person in people.results" :key="person.name">
-        {{ person.name }}
+      <div class="column is-one-third" v-for="person in people.results" :key="person.name">
+        <div class="box">
+          <h2 class="subtitle">{{ person.name }}</h2>
 
-        <!-- Comment form for each character -->
-        <div>
-          <form @submit.prevent="submitComment(person.name)">
-            <label for="comment">Add a comment for {{ person.name }}:</label>
-            <input type="text" v-model="newComment[person.name]" placeholder="Your comment" />
-            <button type="submit">Submit Comment</button>
+          <!-- Comment form for each character -->
+          <form @submit.prevent="submitComment(person.name)" class="field">
+            <label class="label">Add a comment for {{ person.name }}:</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                v-model="newComment[person.name]"
+                placeholder="Your comment"
+              />
+            </div>
+            <div class="control mt-2">
+              <button class="button is-link">Submit Comment</button>
+            </div>
           </form>
 
           <!-- Display comments for each character -->
-          <div v-if="comments[person.name] && comments[person.name].length">
-            <h4>Comments:</h4>
+          <div v-if="comments[person.name] && comments[person.name].length" class="mt-3">
+            <h4 class="subtitle is-6">Comments:</h4>
             <ul>
-              <li v-for="comment in comments[person.name]" :key="comment">{{ comment }}</li>
+              <li
+                v-for="comment in comments[person.name]"
+                :key="comment"
+                class="notification is-light"
+              >
+                {{ comment }}
+              </li>
             </ul>
           </div>
         </div>
-      </li>
-    </ul>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import swapiService from '@/services/swapiService';  // Import API service
+import swapiService from '@/services/swapiService'; // Import API service
 
 // Reactive state variables
 const people = ref([]);
@@ -73,3 +87,21 @@ const submitComment = async (personName) => {
 // Fetch people when the component is mounted
 onMounted(fetchPeople);
 </script>
+
+<style scoped>
+.container {
+  max-width: 1200px;
+}
+
+.box {
+  background-color: #f5f5f5;
+}
+
+.subtitle {
+  font-size: 1.5em;
+}
+
+.notification {
+  background-color: #f0f0f0;
+}
+</style>
